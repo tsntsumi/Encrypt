@@ -15,10 +15,6 @@ namespace Encrypt
 		/// </summary>
 		private readonly Stream InputStream;
 		/// <summary>
-		/// 復号化されたデータを出力するストリーム。
-		/// </summary>
-		private readonly Stream OutputStream;
-		/// <summary>
 		/// 実質的に復号化を行うストリーム。
 		/// </summary>
 		private CryptoStream CryptoStream;
@@ -41,22 +37,15 @@ namespace Encrypt
 		/// <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
 		/// </summary>
 		/// <param name="inputStream">復号化を行う対象となる入力ストリーム。</param>
-		/// <param name="outputStream">復号化されたデータを出力するストリーム。</param>
 		/// <param name="password">パスワード。</param>
-		public Decryptor(Stream inputStream, Stream outputStream, string password)
+		public Decryptor(Stream inputStream, string password)
 		{
 			if (inputStream == null)
 			{
 				throw new ArgumentNullException("inputStream");
 			}
-			if (outputStream == null)
-			{
-				throw new ArgumentNullException("outputStream");
-			}
 
 			InputStream = inputStream;
-			OutputStream = outputStream;
-
 			CreateDecryptStream(password);
 		}
 
@@ -66,27 +55,9 @@ namespace Encrypt
 		/// <param name="inputFileName">復号化を行う対象となる入力ファイル名。</param>
 		/// <param name="outputFileName">復号化されたデータを出力するファイル名。</param>
 		/// <param name="password">パスワード。</param>
-		public Decryptor(string inputFileName, string outputFileName, string password)
+		public Decryptor(string inputFileName, string password)
 		{
 			InputStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-			OutputStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
-			CreateDecryptStream(password);
-		}
-
-		/// <summary>
-		/// <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
-		/// </summary>
-		/// <param name="inputFileName">復号化を行う対象となる入力ファイル名。</param>
-		/// <param name="outputStream">復号化されたデータを出力するストリーム。</param>
-		/// <param name="password">パスワード。</param>
-		public Decryptor(string inputFileName, Stream outputStream, string password)
-		{
-			if (outputStream == null)
-			{
-				throw new ArgumentNullException("outputStream");
-			}
-			InputStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-			OutputStream = outputStream;
 			CreateDecryptStream(password);
 		}
 
@@ -136,11 +107,16 @@ namespace Encrypt
 		/// <summary>
 		/// コンストラクタで設定されたストリームを使用して、復号化を行います。
 		/// </summary>
-		public void Decrypt()
+		/// <param name="outputStream">復号化したデータを出力するストリーム。</param>
+		public void Decrypt(Stream outputStream)
 		{
 			if (disposed)
 			{
 				return;
+			}
+			if (outputStream == null)
+			{
+				throw new ArgumentNullException("outputStream");
 			}
 
 			int readLength;
@@ -148,7 +124,7 @@ namespace Encrypt
 
 			while ((readLength = DecryptStream.Read(buffer, 0, buffer.Length)) > 0)
 			{
-				OutputStream.Write(buffer, 0, readLength);
+				outputStream.Write(buffer, 0, readLength);
 			}
 		}
 
@@ -160,9 +136,9 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public static void Decrypt(Stream inputStream, Stream outputStream, string password)
 		{
-			using (var decryptor = new Decryptor(inputStream, outputStream, password))
+			using (var decryptor = new Decryptor(inputStream, password))
 			{
-				decryptor.Decrypt();
+				decryptor.Decrypt(outputStream);
 			}
 		}
 
@@ -174,9 +150,10 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public static void CopyFile(string source, string destination, string password)
 		{
-			using (var decryptor = new Decryptor(source, destination, password))
+			using (var outputStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write))
+			using (var decryptor = new Decryptor(source, password))
 			{
-				decryptor.Decrypt();
+				decryptor.Decrypt(outputStream);
 			}
 		}
 
@@ -217,10 +194,6 @@ namespace Encrypt
 				if (CryptoStream != null)
 				{
 					CryptoStream.Dispose();
-				}
-				if (OutputStream != null)
-				{
-					OutputStream.Close();
 				}
 				if (InputStream != null)
 				{
