@@ -150,10 +150,9 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public static void CopyFile(string source, string destination, string password)
 		{
-			using (var outputStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write))
+			using (var outputStream = new FileStream(destination, FileMode.Create, FileAccess.Write))
 			using (var decryptor = new Decryptor(source, password))
 			{
-				outputStream.SetLength(0);
 				decryptor.Decrypt(outputStream);
 			}
 		}

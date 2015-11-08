@@ -57,8 +57,7 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public Encryptor(string outputFileName, string password)
 		{
-			OutputStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
-			OutputStream.SetLength(0);
+			OutputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write);
 			CreateEncryptStream(password);
 		}
 
