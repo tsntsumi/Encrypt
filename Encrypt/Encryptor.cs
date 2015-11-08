@@ -12,10 +12,6 @@ namespace Encrypt
 	public class Encryptor: IDisposable
 	{
 		/// <summary>
-		/// 暗号化を行う対象となる入力ストリーム。
-		/// </summary>
-		private readonly Stream InputStream;
-		/// <summary>
 		/// 暗号化されたデータを出力するストリーム。
 		/// </summary>
 		private readonly Stream OutputStream;
@@ -41,52 +37,26 @@ namespace Encrypt
 		/// <summary>
 		/// <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
 		/// </summary>
-		/// <param name="inputStream">暗号化を行う対象となる入力ストリーム。</param>
 		/// <param name="outputStream">暗号化されたデータを出力するストリーム。</param>
 		/// <param name="password">パスワード。</param>
-		public Encryptor(Stream inputStream, Stream outputStream, string password)
+		public Encryptor(Stream outputStream, string password)
 		{
-			if (inputStream == null)
-			{
-				throw new ArgumentNullException("inputStream");
-			}
 			if (outputStream == null)
 			{
 				throw new ArgumentNullException("outputStream");
 			}
 
-			InputStream = inputStream;
 			OutputStream = outputStream;
-
 			CreateEncryptStream(password);
 		}
 
 		/// <summary>
 		/// <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
 		/// </summary>
-		/// <param name="inputFileName">暗号化を行う対象となる入力ファイル名。</param>
 		/// <param name="outputFileName">暗号化されたデータを出力するファイル名。</param>
 		/// <param name="password">パスワード。</param>
-		public Encryptor(string inputFileName, string outputFileName, string password)
+		public Encryptor(string outputFileName, string password)
 		{
-			InputStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-			OutputStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
-			CreateEncryptStream(password);
-		}
-
-		/// <summary>
-		/// <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
-		/// </summary>
-		/// <param name="inputStream">暗号化を行う対象となる入力ストリーム。</param>
-		/// <param name="outputFileName">暗号化されたデータを出力するファイル名。</param>
-		/// <param name="password">パスワード。</param>
-		public Encryptor(Stream inputStream, string outputFileName, string password)
-		{
-			if (inputStream == null)
-			{
-				throw new ArgumentNullException("inputStream");
-			}
-			InputStream = inputStream;
 			OutputStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
 			CreateEncryptStream(password);
 		}
@@ -134,17 +104,22 @@ namespace Encrypt
 		/// <summary>
 		/// コンストラクタで設定されたストリームを使用して、暗号化を行います。
 		/// </summary>
-		public void Encrypt()
+		/// <param name="inputStream">暗号化するデータを入力するストリーム。</param>
+		public void Encrypt(Stream inputStream)
 		{
 			if (disposed)
 			{
 				return;
 			}
+			if (inputStream == null)
+			{
+				throw new ArgumentNullException("inputStream");
+			}
 
 			int readLength;
 			byte[] buffer = new byte[4096];
 
-			while ((readLength = InputStream.Read(buffer, 0, buffer.Length)) > 0)
+			while ((readLength = inputStream.Read(buffer, 0, buffer.Length)) > 0)
 			{
 				EncryptStream.Write(buffer, 0, readLength);
 			}
@@ -158,9 +133,9 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public static void Encrypt(Stream inputStream, Stream outputStream, string password)
 		{
-			using (var encryptor = new Encryptor(inputStream, outputStream, password))
+			using (var encryptor = new Encryptor(outputStream, password))
 			{
-				encryptor.Encrypt();
+				encryptor.Encrypt(inputStream);
 			}
 		}
 
@@ -172,9 +147,10 @@ namespace Encrypt
 		/// <param name="password">パスワード。</param>
 		public static void CopyFile(string source, string destination, string password)
 		{
-			using (var encryptor = new Encryptor(source, destination, password))
+			using (var inputStream = new FileStream(source, FileMode.Open, FileAccess.Read))
+			using (var encryptor = new Encryptor(destination, password))
 			{
-				encryptor.Encrypt();
+				encryptor.Encrypt(inputStream);
 			}
 		}
 
@@ -202,9 +178,9 @@ namespace Encrypt
 				// 復号後の予想サイズは、暗号化されたファイルが圧縮されているため概算です。
 				capacity = (fileSize * 3) / 2 + appendSize;
 				using (var outputStream = new MemoryStream(capacity))
-				using (var decryptor = new Decryptor(fileName, outputStream, password))
+				using (var decryptor = new Decryptor(fileName, password))
 				{
-					decryptor.Decrypt();
+					decryptor.Decrypt(outputStream);
 					buffer = outputStream.GetBuffer();
 					decryptedSize = outputStream.Length;
 					capacity = outputStream.Capacity;  // 復号中にバッファが拡張された場合のためにcapacityを更新します。
@@ -224,9 +200,9 @@ namespace Encrypt
 				streamWriter.WriteLine("{0}", text);
 				streamWriter.Flush();
 				inputStream.Seek(0, SeekOrigin.Begin);
-				using (var encryptor = new Encryptor(inputStream, fileName, password))
+				using (var encryptor = new Encryptor(fileName, password))
 				{
-					encryptor.Encrypt();
+					encryptor.Encrypt(inputStream);
 				}
 			}
 		}
@@ -272,10 +248,6 @@ namespace Encrypt
 				if (OutputStream != null)
 				{
 					OutputStream.Close();
-				}
-				if (InputStream != null)
-				{
-					InputStream.Close();
 				}
 			}
 
