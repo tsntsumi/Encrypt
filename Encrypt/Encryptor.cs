@@ -209,6 +209,40 @@ namespace Encrypt
 		}
 
 		/// <summary>
+		/// 暗号化されたファイルを一時フォルダに復号化して、末尾にテキストを追加し、再度暗号化して上書き保存します。
+		/// </summary>
+		/// <param name="fileName">テキストを追加する暗号化されたファイル名。</param>
+		/// <param name="temporaryFolderName">復号化に使用する一時フォルダ名。</param>
+		/// <param name="text">追加するテキスト。</param>
+		/// <param name="password">パスワード。</param>
+		/// <param name="encoding">テキストのエンコーディング。</param>
+		public static void AppendTextToFileViaTemporaryFile(string fileName, string temporaryFolderName, string text, string password, Encoding encoding)
+		{
+			string temporaryFileName = Path.Combine(temporaryFolderName, Path.GetFileName(fileName));
+			bool append;
+
+			if (Path.GetFullPath(temporaryFileName) == Path.GetFullPath(fileName))
+			{
+				throw new ArgumentException("Same folder", temporaryFolderName);
+			}
+			if (File.Exists(fileName))
+			{
+				Decryptor.CopyFile(fileName, temporaryFileName, password);
+				append = true;
+			}
+			else
+			{
+				append = false;
+			}
+			using (var writer = new StreamWriter(temporaryFileName, append, encoding))
+			{
+				writer.WriteLine("{0}", text);
+			}
+			Encryptor.CopyFile(temporaryFileName, fileName, password);
+			File.Delete(temporaryFileName);
+		}
+
+		/// <summary>
 		/// <see cref="Encrypt.Encryptor"/> オブジェクトが使用した全てのリソースを解放します。
 		/// </summary>
 		/// <remarks>
