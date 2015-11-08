@@ -29,7 +29,6 @@ namespace EncryptXmlFile
 				{
 					Console.WriteLine("User ID: {0}", user.UserID);
 					Console.WriteLine("User Name: {0}", user.UserName);
-					user.UserName = user.UserName;
 				}
 			}
 			// オブジェクトを暗号化して保存します。
