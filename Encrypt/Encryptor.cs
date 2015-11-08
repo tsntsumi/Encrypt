@@ -151,6 +151,20 @@ namespace Encrypt
 		}
 
 		/// <summary>
+		/// 指定されたストリームを暗号化して、指定されたストリームに出力します。
+		/// </summary>
+		/// <param name="inputStream">入力ストリーム。</param>
+		/// <param name="outputStream">出力ストリーム。</param>
+		/// <param name="password">パスワード。</param>
+		public static void Encrypt(Stream inputStream, Stream outputStream, string password)
+		{
+			using (var encryptor = new Encryptor(inputStream, outputStream, password))
+			{
+				encryptor.Encrypt();
+			}
+		}
+
+		/// <summary>
 		/// 指定されたファイルを暗号化してコピーします。
 		/// </summary>
 		/// <param name="source">暗号化するファイル名。</param>
