@@ -33,23 +33,14 @@ namespace EncryptXmlFile
 				}
 			}
 			// オブジェクトを暗号化して保存します。
-			using (var memoryStream = new MemoryStream())
+			using (var encryptor = new Encryptor("userMan.xml.enc", password))
 			{
-				serializer.Serialize(memoryStream, userMan);
-				memoryStream.Seek(0, SeekOrigin.Begin);
-				using (var outputStream = new FileStream("UserMan.xml.enc", FileMode.OpenOrCreate, FileAccess.Write))
-				{
-					Encryptor.Encrypt(memoryStream, outputStream, password);
-				}
+				serializer.Serialize(encryptor.EncryptStream, userMan);
 			}
 			// 暗号化したファイルを復号化して、オブジェクトに読み込みます。
-			using (var inputStream = new FileStream("UserMan.xml.enc", FileMode.Open, FileAccess.Read))
-			using (var memoryStream = new MemoryStream())
-			using (var decryptor = new Decryptor(inputStream, memoryStream, password))
+			using (var decryptor = new Decryptor("UserMan.xml.enc", password))
 			{
-				decryptor.Decrypt();
-				memoryStream.Seek(0, SeekOrigin.Begin);
-				UserMan decryptedUserMan = serializer.Deserialize(memoryStream) as UserMan;
+				UserMan decryptedUserMan = serializer.Deserialize(decryptor.DecryptStream) as UserMan;
 				foreach (var user in decryptedUserMan.UserList)
 				{
 					Console.WriteLine("User ID: {0}", user.UserID);
