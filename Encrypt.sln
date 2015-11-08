@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encrypt", "Encrypt\Encrypt.csproj", "{89ED7789-888C-437A-B79A-BA5F26DAEDD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptFile", "EncryptFile\EncryptFile.csproj", "{57B79F9C-FA53-45E5-9C24-FCB89F32008A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecryptFile", "DecryptFile\DecryptFile.csproj", "{938DE2B4-F5CD-4E4C-8EB6-EE63AB43FB19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptFileAppend", "EncryptFileAppend\EncryptFileAppend.csproj", "{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938DE2B4-F5CD-4E4C-8EB6-EE63AB43FB19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938DE2B4-F5CD-4E4C-8EB6-EE63AB43FB19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938DE2B4-F5CD-4E4C-8EB6-EE63AB43FB19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938DE2B4-F5CD-4E4C-8EB6-EE63AB43FB19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
