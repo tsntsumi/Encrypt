@@ -159,14 +159,14 @@ namespace Encrypt
 		}
 
 		/// <summary>
-		/// <see cref="Encrypt.Encryptor"/> オブジェクトが使用した全てのリソースを解放します。
+		/// <see cref="Encrypt.Decryptor"/> オブジェクトが使用した全てのリソースを解放します。
 		/// </summary>
 		/// <remarks>
-		/// <see cref="Encrypt.Encryptor"/> を使用し終わったら <see cref="Dispose"/> を呼び出してください。
+		/// <see cref="Encrypt.Decryptor"/> を使用し終わったら <see cref="Dispose"/> を呼び出してください。
 		/// <see cref="Dispose"/> メソッドは <see cref="Encrypt.Encryptor"/> を使用できない状態にします。
-		/// <see cref="Dispose"/> を呼び出した後は、ガベージコレクタが <see cref="Encrypt.Encryptor"/> の
+		/// <see cref="Dispose"/> を呼び出した後は、ガベージコレクタが <see cref="Encrypt.Decryptor"/> の
 		/// 占有しているメモリを再利用できるように、
-		/// <see cref="Encrypt.Encryptor"/> への全ての参照を解放しなければなりません。
+		/// <see cref="Encrypt.Decryptor"/> への全ての参照を解放しなければなりません。
 		/// </remarks>
 		public void Dispose()
 		{
