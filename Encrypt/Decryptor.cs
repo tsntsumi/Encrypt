@@ -153,6 +153,7 @@ namespace Encrypt
 			using (var outputStream = new FileStream(destination, FileMode.OpenOrCreate, FileAccess.Write))
 			using (var decryptor = new Decryptor(source, password))
 			{
+				outputStream.SetLength(0);
 				decryptor.Decrypt(outputStream);
 			}
 		}

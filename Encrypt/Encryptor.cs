@@ -58,6 +58,7 @@ namespace Encrypt
 		public Encryptor(string outputFileName, string password)
 		{
 			OutputStream = new FileStream(outputFileName, FileMode.OpenOrCreate, FileAccess.Write);
+			OutputStream.SetLength(0);
 			CreateEncryptStream(password);
 		}
 
