@@ -153,6 +153,20 @@ namespace Encrypt
 		}
 
 		/// <summary>
+		/// 指定されたストリームを復号化して、指定されたストリームに出力します。
+		/// </summary>
+		/// <param name="inputStream">入力ストリーム。</param>
+		/// <param name="outputStream">出力ストリーム。</param>
+		/// <param name="password">パスワード。</param>
+		public static void Decrypt(Stream inputStream, Stream outputStream, string password)
+		{
+			using (var decryptor = new Decryptor(inputStream, outputStream, password))
+			{
+				decryptor.Decrypt();
+			}
+		}
+
+		/// <summary>
 		/// 指定されたファイルを復号化してコピーします。
 		/// </summary>
 		/// <param name="source">復号化するファイル名。</param>
