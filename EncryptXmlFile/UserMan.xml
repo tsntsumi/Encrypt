@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<UserMan>
+<UserList>
+<User>
+<UserID>User1</UserID>
+<UserName>ユーザ番号1</UserName>
+</User>
+<User>
+<UserID>User2</UserID>
+<UserName>ユーザ番号2</UserName>
+</User>
+<User>
+<UserID>User3</UserID>
+<UserName>ユーザ番号3</UserName>
+</User>
+</UserList>
+</UserMan>

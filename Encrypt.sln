@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecryptFile", "DecryptFile\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptFileAppend", "EncryptFileAppend\EncryptFileAppend.csproj", "{292A76E9-7BF8-40C6-BE01-D7D56ACA084A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptXmlFile", "EncryptXmlFile\EncryptXmlFile.csproj", "{69C661EE-27F6-4AA5-A5DE-308E8A8AECAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57B79F9C-FA53-45E5-9C24-FCB89F32008A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C661EE-27F6-4AA5-A5DE-308E8A8AECAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C661EE-27F6-4AA5-A5DE-308E8A8AECAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C661EE-27F6-4AA5-A5DE-308E8A8AECAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C661EE-27F6-4AA5-A5DE-308E8A8AECAA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89ED7789-888C-437A-B79A-BA5F26DAEDD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
