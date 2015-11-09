@@ -215,6 +215,11 @@ namespace Encrypt
         /// <param name="text">追加するテキスト。</param>
         /// <param name="password">パスワード。</param>
         /// <param name="encoding">テキストのエンコーディング。</param>
+        /// <remarks>>
+        /// 暗号化されているファイル名と同じ名前で、一時ファイルを一時フォルダの下に作成するため、
+        /// 一時フォルダは暗号化されているファイルのフォルダと同じではいけません。
+        /// 同じフォルダを指定すると、ArgumentException を投げます。
+        /// </remarks>
         public static void AppendTextToFileViaTemporaryFile(string fileName, string temporaryFolderName, string text, string password, Encoding encoding)
         {
             string temporaryFileName = Path.Combine(temporaryFolderName, Path.GetFileName(fileName));
@@ -222,7 +227,7 @@ namespace Encrypt
 
             if (Path.GetFullPath(temporaryFileName) == Path.GetFullPath(fileName))
             {
-                throw new ArgumentException("Same folder", temporaryFolderName);
+                throw new ArgumentException("Same folder of fileName", "temporaryFolderName");
             }
             if (File.Exists(fileName))
             {
