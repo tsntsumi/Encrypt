@@ -140,12 +140,12 @@ namespace Encrypt
         }
 
         /// <summary>
-        /// 指定されたファイルを暗号化してコピーします。
+        /// 指定されたファイルを暗号化して、指定したファイルに上書き保存します。
         /// </summary>
         /// <param name="source">暗号化するファイル名。</param>
         /// <param name="destination">暗号化先のファイル名。</param>
         /// <param name="password">パスワード。</param>
-        public static void CopyFile(string source, string destination, string password)
+        public static void Encrypt(string source, string destination, string password)
         {
             using (var inputStream = new FileStream(source, FileMode.Open, FileAccess.Read))
             using (var encryptor = new Encryptor(destination, password))
@@ -231,7 +231,7 @@ namespace Encrypt
             }
             if (File.Exists(fileName))
             {
-                Decryptor.CopyFile(fileName, temporaryFileName, password);
+                Decryptor.Decrypt(fileName, temporaryFileName, password);
                 append = true;
             }
             else
@@ -242,7 +242,7 @@ namespace Encrypt
             {
                 writer.WriteLine("{0}", text);
             }
-            Encryptor.CopyFile(temporaryFileName, fileName, password);
+            Encryptor.Encrypt(temporaryFileName, fileName, password);
             File.Delete(temporaryFileName);
         }
 

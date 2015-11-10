@@ -143,12 +143,12 @@ namespace Encrypt
         }
 
         /// <summary>
-        /// 指定されたファイルを復号化してコピーします。
+        /// 指定されたファイルを復号化して、指定されたファイルに上書き保存します。
         /// </summary>
         /// <param name="source">復号化するファイル名。</param>
         /// <param name="destination">復号化先のファイル名。</param>
         /// <param name="password">パスワード。</param>
-        public static void CopyFile(string source, string destination, string password)
+        public static void Decrypt(string source, string destination, string password)
         {
             using (var outputStream = new FileStream(destination, FileMode.Create, FileAccess.Write))
             using (var decryptor = new Decryptor(source, password))
