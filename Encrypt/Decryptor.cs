@@ -150,8 +150,8 @@ namespace Encrypt
         /// <param name="password">パスワード。</param>
         public static void Decrypt(string source, string destination, string password)
         {
-            using (var outputStream = new FileStream(destination, FileMode.Create, FileAccess.Write))
             using (var decryptor = new Decryptor(source, password))
+            using (var outputStream = new FileStream(destination, FileMode.Create, FileAccess.Write))
             {
                 decryptor.Decrypt(outputStream);
             }
