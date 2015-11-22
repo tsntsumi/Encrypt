@@ -84,11 +84,19 @@ namespace Encrypt
 
                 // ファイルの先頭からsaltを読み込む
                 var salt = new byte[settings.SaltBytes];
-                InputStream.Read(salt, 0, salt.Length);
+                int readSaltLength = InputStream.Read(salt, 0, salt.Length);
+                if (readSaltLength < salt.Length)
+                {
+                    throw new EndOfStreamException("Insufficient salt length");
+                }
 
                 // ファイルの先頭からivを読み込む
                 var iv = new byte[settings.SaltBytes];
-                InputStream.Read(iv, 0, iv.Length);
+                int readIVLength = InputStream.Read(iv, 0, iv.Length);
+                if (readIVLength < iv.Length)
+                {
+                    throw new EndOfStreamException("Insufficient IV length");
+                }
 
                 // 指定されたpasswordとsaltを使って擬似乱数を生成
                 var derivedBytes = new Rfc2898DeriveBytes(password, salt);
