@@ -53,7 +53,6 @@ namespace Encrypt
         /// <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="inputFileName">復号化を行う対象となる入力ファイル名。</param>
-        /// <param name="outputFileName">復号化されたデータを出力するファイル名。</param>
         /// <param name="password">パスワード。</param>
         public Decryptor(string inputFileName, string password)
         {
@@ -161,9 +160,9 @@ namespace Encrypt
         /// <see cref="Encrypt.Decryptor"/> オブジェクトが使用した全てのリソースを解放します。
         /// </summary>
         /// <remarks>
-        /// <see cref="Encrypt.Decryptor"/> を使用し終わったら <see cref="Dispose"/> を呼び出してください。
-        /// <see cref="Dispose"/> メソッドは <see cref="Encrypt.Encryptor"/> を使用できない状態にします。
-        /// <see cref="Dispose"/> を呼び出した後は、ガベージコレクタが <see cref="Encrypt.Decryptor"/> の
+        /// <see cref="Encrypt.Decryptor"/> を使用し終わったら <see cref="Dispose()"/> を呼び出してください。
+        /// <see cref="Dispose()"/> メソッドは <see cref="Encrypt.Encryptor"/> を使用できない状態にします。
+        /// <see cref="Dispose()"/> を呼び出した後は、ガベージコレクタが <see cref="Encrypt.Decryptor"/> の
         /// 占有しているメモリを再利用できるように、
         /// <see cref="Encrypt.Decryptor"/> への全ての参照を解放しなければなりません。
         /// </remarks>
@@ -176,7 +175,7 @@ namespace Encrypt
         /// <summary>
         /// リソースを解放します。
         /// </summary>
-        /// <param name="disposing"><see cref="Dispose"/> から呼び出される場合は <c>true</c>、
+        /// <param name="disposing"><see cref="Dispose()"/> から呼び出される場合は <c>true</c>、
         /// ファイナライザから呼び出される場合は <c>false</c>。
         /// </param>
         protected void Dispose(bool disposing)
