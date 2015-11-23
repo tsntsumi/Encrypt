@@ -74,7 +74,7 @@ namespace Encrypt
                 aes.Padding = settings.Padding;
 
                 // ファイルの先頭からsaltを読み込む
-                var salt = new byte[settings.SaltSize / 8];
+                var salt = new byte[(settings.SaltSize + 7) / 8];
                 int readSaltLength = InputStream.Read(salt, 0, salt.Length);
                 if (readSaltLength < salt.Length)
                 {
@@ -82,7 +82,7 @@ namespace Encrypt
                 }
 
                 // ファイルの先頭からivを読み込む
-                var iv = new byte[settings.BlockSize / 8];
+                var iv = new byte[aes.BlockSize / 8];   // aes.BlockSizeは必ず8の倍数の 128
                 int readIVLength = InputStream.Read(iv, 0, iv.Length);
                 if (readIVLength < iv.Length)
                 {
@@ -92,7 +92,7 @@ namespace Encrypt
                 // 指定されたpasswordとsaltを使って擬似乱数を生成
                 var derivedBytes = new Rfc2898DeriveBytes(password, salt);
 
-                aes.Key = derivedBytes.GetBytes(settings.KeySize / 8);
+                aes.Key = derivedBytes.GetBytes(aes.KeySize / 8);   // aes.KeySizeは必ず8の倍数
                 aes.IV = iv;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
