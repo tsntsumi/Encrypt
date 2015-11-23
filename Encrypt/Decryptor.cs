@@ -17,11 +17,11 @@ namespace Encrypt
         /// <summary>
         /// 実質的に復号化を行うストリーム。
         /// </summary>
-        private CryptoStream CryptoStream;
+        private readonly CryptoStream CryptoStream;
         /// <summary>
         /// 復号化されたデータを圧縮するストリーム。
         /// </summary>
-        private DeflateStream DeflateStream;
+        private readonly DeflateStream DeflateStream;
 
         /// <summary>
         /// オブジェクトが解放されたことを表すフラグ。
@@ -34,41 +34,30 @@ namespace Encrypt
         public Stream DecryptStream { get { return DeflateStream; } }
 
         /// <summary>
-        /// <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
+        /// 入力ファイル名とパスワードを指定して、 <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="inputFileName">復号化を行う対象となる入力ファイル名。</param>
+        /// <param name="password">パスワード。</param>
+        public Decryptor(string inputFileName, string password)
+            : this(new FileStream(inputFileName, FileMode.Open, FileAccess.Read), password)
+        {
+        }
+
+        /// <summary>
+        /// 入力ストリームとパスワードを指定して、 <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="inputStream">復号化を行う対象となる入力ストリーム。</param>
         /// <param name="password">パスワード。</param>
-        public Decryptor(Stream inputStream, string password)
+        /// <remarks>
+        /// 暗号化に使用したソルトとIVを、入力ストリームの先頭から読み込みます。
+        /// AESアルゴリズムを使用した復号化を行うストリームを作成します。
+        /// </remarks>
+        private Decryptor(Stream inputStream, string password)
         {
             if (inputStream == null)
             {
                 throw new ArgumentNullException("inputStream");
             }
-
-            InputStream = inputStream;
-            CreateDecryptStream(password);
-        }
-
-        /// <summary>
-        /// <see cref="Encrypt.Decryptor"/> クラスの新しいインスタンスを初期化します。
-        /// </summary>
-        /// <param name="inputFileName">復号化を行う対象となる入力ファイル名。</param>
-        /// <param name="password">パスワード。</param>
-        public Decryptor(string inputFileName, string password)
-        {
-            InputStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read);
-            CreateDecryptStream(password);
-        }
-
-        /// <summary>
-        /// AESアルゴリズムを使用した復号化を行うストリームを作成します。
-        /// </summary>
-        /// <param name="password">パスワード。</param>
-        /// <remarks>
-        /// 暗号化に使用したソルトとIVを、入力ストリームの先頭から読み込みます。
-        /// </remarks>
-        private void CreateDecryptStream(string password)
-        {
             if (string.IsNullOrEmpty(password))
             {
                 throw new ArgumentNullException("password");

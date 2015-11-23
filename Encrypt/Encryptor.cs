@@ -18,11 +18,11 @@ namespace Encrypt
         /// <summary>
         /// 実質的に暗号化を行うストリーム。
         /// </summary>
-        private CryptoStream CryptoStream;
+        private readonly CryptoStream CryptoStream;
         /// <summary>
         /// 暗号化されたデータを圧縮するストリーム。
         /// </summary>
-        private DeflateStream DeflateStream;
+        private readonly DeflateStream DeflateStream;
 
         /// <summary>
         /// オブジェクトが解放されたことを表すフラグ。
@@ -35,41 +35,36 @@ namespace Encrypt
         public Stream EncryptStream { get { return DeflateStream; } }
 
         /// <summary>
-        /// <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
+        /// 出力ファイル名とパスワードを指定して、 <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
+        /// </summary>
+        /// <param name="outputFileName">暗号化されたデータを出力するファイル名。</param>
+        /// <param name="password">パスワード。</param>
+        public Encryptor(string outputFileName, string password)
+            : this(new FileStream(outputFileName, FileMode.Create, FileAccess.Write), password)
+        {
+        }
+
+        /// <summary>
+        /// 出力ストリームとパスワードを指定して、 <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
         /// </summary>
         /// <param name="outputStream">暗号化されたデータを出力するストリーム。</param>
         /// <param name="password">パスワード。</param>
+        /// <remarks>
+        /// <para>
+        /// AESアルゴリズムを使用した暗号化を行うストリームを作成します。
+        /// 暗号化ストリームを作成した時に使用したソルトとIVを、出力ストリームの先頭に出力します。
+        /// </para>
+        /// <para>
+        /// パスワードが<see cref="Encrypt.EncryptSettings.KeySize"/> より短いと鍵空間が小さくなるため、
+        /// 指定されたパスワードをベースに擬似乱数を生成して鍵として使用します。
+        /// </para>
+        /// </remarks>
         public Encryptor(Stream outputStream, string password)
         {
             if (outputStream == null)
             {
                 throw new ArgumentNullException("outputStream");
             }
-
-            OutputStream = outputStream;
-            CreateEncryptStream(password);
-        }
-
-        /// <summary>
-        /// <see cref="Encrypt.Encryptor"/> クラスの新しいインスタンスを初期化します。
-        /// </summary>
-        /// <param name="outputFileName">暗号化されたデータを出力するファイル名。</param>
-        /// <param name="password">パスワード。</param>
-        public Encryptor(string outputFileName, string password)
-        {
-            OutputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write);
-            CreateEncryptStream(password);
-        }
-
-        /// <summary>
-        /// AESアルゴリズムを使用した暗号化を行うストリームを作成します。
-        /// </summary>
-        /// <param name="password">パスワード。</param>
-        /// <remarks>
-        /// 暗号化に使用したソルトとIVを、出力ストリームの先頭に出力します。
-        /// </remarks>
-        private void CreateEncryptStream(string password)
-        {
             if (string.IsNullOrEmpty(password))
             {
                 throw new ArgumentNullException("password");
