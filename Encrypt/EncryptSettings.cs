@@ -30,9 +30,9 @@ namespace Encrypt
         /// </summary>
         public PaddingMode Padding { get; set; }
         /// <summary>
-        /// 暗号化に使用するソルト長をバイト数で設定または取得します。
+        /// 暗号化に使用するソルト長をビット数で設定または取得します。
         /// </summary>
-        public int SaltBytes { get; set; }
+        public int SaltSize { get; set; }
         /// <summary>
         /// 暗号化に使用する鍵長をバイト数で設定または取得します。
         /// </summary>
@@ -53,7 +53,7 @@ namespace Encrypt
             KeySize = 128;
             Mode = CipherMode.CBC;
             Padding = PaddingMode.PKCS7;
-            SaltBytes = 16;
+            SaltSize = 128;
             KeyBytes = 16;
         }
     }
