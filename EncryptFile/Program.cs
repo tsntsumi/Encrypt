@@ -34,7 +34,7 @@ namespace EncryptFile
 			var password = "Easy#Password";
 			try
 			{
-				Encryptor.CopyFile(inputFileName, outputFileName, password);
+                Encryptor.Encrypt(inputFileName, outputFileName, password);
 			}
 			catch (Exception ex)
 			{
