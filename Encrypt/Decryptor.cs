@@ -91,7 +91,7 @@ namespace Encrypt
                 }
 
                 // ファイルの先頭からivを読み込む
-                var iv = new byte[settings.SaltSize / 8];
+                var iv = new byte[settings.BlockSize / 8];
                 int readIVLength = InputStream.Read(iv, 0, iv.Length);
                 if (readIVLength < iv.Length)
                 {
