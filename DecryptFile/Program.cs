@@ -43,7 +43,7 @@ namespace DecryptFile
 			var password = "Easy#Password";
 			try
 			{
-				Decryptor.CopyFile(inputFileName, outputFileName, password);
+                Decryptor.Decrypt(inputFileName, outputFileName, password);
 			}
 			catch (Exception ex)
 			{
