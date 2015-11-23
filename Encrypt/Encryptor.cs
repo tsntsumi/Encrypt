@@ -87,7 +87,7 @@ namespace Encrypt
                 var derivedBytes = new Rfc2898DeriveBytes(password, settings.SaltSize / 8);
                 var salt = derivedBytes.Salt;
 
-                aes.Key = derivedBytes.GetBytes(settings.KeyBytes);
+                aes.Key = derivedBytes.GetBytes(settings.KeySize / 8);
                 aes.GenerateIV();
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);

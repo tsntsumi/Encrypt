@@ -101,7 +101,7 @@ namespace Encrypt
                 // 指定されたpasswordとsaltを使って擬似乱数を生成
                 var derivedBytes = new Rfc2898DeriveBytes(password, salt);
 
-                aes.Key = derivedBytes.GetBytes(settings.KeyBytes);
+                aes.Key = derivedBytes.GetBytes(settings.KeySize / 8);
                 aes.IV = iv;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
