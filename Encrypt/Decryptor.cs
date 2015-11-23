@@ -63,6 +63,8 @@ namespace Encrypt
                 throw new ArgumentNullException("password");
             }
 
+            InputStream = inputStream;
+
             using (var aes = new AesManaged())
             {
                 var settings = EncryptSettings.Instance;
