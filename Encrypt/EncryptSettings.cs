@@ -16,10 +16,16 @@ namespace Encrypt
         /// <summary>
         /// 暗号化に使用するブロック長をビット数で設定または取得します。
         /// </summary>
+        /// <remarks>
+        /// AESアルゴリズムでは 128ビットを指定します。
+        /// </remarks>
         public int BlockSize { get; set; }
         /// <summary>
         /// 暗号化に使用する鍵長をビット数で設定または取得します。
         /// </summary>
+        /// <remarks>
+        /// AESアルゴリズムでは 128, 192, 256ビットの中から指定します。
+        /// </remarks>
         public int KeySize { get; set; }
         /// <summary>
         /// 暗号化に使用するブロック暗号化モードを設定または取得します。
