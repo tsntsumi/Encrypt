@@ -123,6 +123,17 @@ namespace Encrypt
         }
 
         /// <summary>
+        /// コンストラクタで設定されたストリームを使用して、指定されたファイルを暗号化します。
+        /// </summary>
+        /// <param name="inputFileName">暗号化するファイル名。</param>
+        public void Encrypt(string inputFileName)
+        {
+            using (var inputStream = new FileStream(inputFileName, FileMode.Open, FileAccess.Read))
+            {
+                Encrypt(inputStream);
+            }
+        }
+
         /// 指定されたストリームを暗号化して、指定されたストリームに出力します。
         /// </summary>
         /// <param name="inputStream">入力ストリーム。</param>
