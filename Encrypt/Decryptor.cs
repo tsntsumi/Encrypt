@@ -127,6 +127,21 @@ namespace Encrypt
         }
 
         /// <summary>
+        /// コンストラクタで設定されたストリームから復号化して、指定されたファイルに出力します。
+        /// </summary>
+        /// <param name="outputFileName">復号化したデータを出力するファイル名。</param>
+        public void Decrypt(string outputFileName)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            using (var outputStream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write))
+            {
+                Decrypt(outputStream);
+            }
+        }
+
         /// 指定されたストリームを復号化して、指定されたストリームに出力します。
         /// </summary>
         /// <param name="inputStream">入力ストリーム。</param>
