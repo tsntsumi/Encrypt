@@ -12,6 +12,18 @@ namespace Encrypt
         /// ただ一つのインスタンス。
         /// </summary>
         private static EncryptSettings instance = new EncryptSettings();
+        /// <summary>
+        /// 暗号化に使用するブロック長をビット数で格納します。
+        /// </summary>
+        private int blockSize;
+        /// <summary>
+        /// 暗号化に使用する鍵長をビット数で格納します。
+        /// </summary>
+        private int keySize;
+        /// <summary>
+        /// 暗号化に使用するソルト長をビット数で格納します。
+        /// </summary>
+        private int saltSize;
 
         /// <summary>
         /// 暗号化に使用するブロック長をビット数で設定または取得します。
@@ -19,14 +31,38 @@ namespace Encrypt
         /// <remarks>
         /// AESアルゴリズムでは 128ビットを指定します。
         /// </remarks>
-        public int BlockSize { get; set; }
+        /// <exception cref="ArgumentOutOfRangeException">設定した値が128ではない。</exception>
+        public int BlockSize
+        {
+            get { return blockSize; }
+            set
+            {
+                if (value != 128)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+                blockSize = value;
+            }
+        }
         /// <summary>
         /// 暗号化に使用する鍵長をビット数で設定または取得します。
         /// </summary>
         /// <remarks>
         /// AESアルゴリズムでは 128, 192, 256ビットの中から指定します。
         /// </remarks>
-        public int KeySize { get; set; }
+        /// <exception cref="ArgumentOutOfRangeException">設定した値が 128, 192, 256 ではない。</exception>
+        public int KeySize
+        {
+            get { return keySize; }
+            set
+            {
+                if (value != 128 && value != 192 && value != 256)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+                keySize = value;
+            }
+        }
         /// <summary>
         /// 暗号化に使用するブロック暗号化モードを設定または取得します。
         /// </summary>
@@ -38,7 +74,23 @@ namespace Encrypt
         /// <summary>
         /// 暗号化に使用するソルト長をビット数で設定または取得します。
         /// </summary>
-        public int SaltSize { get; set; }
+        /// <remarks>
+        /// 設定する値は、必ず8以上の8で割り切れなければなりません。
+        /// そうでない場合は ArgumentOutOfRangeException が投げられます。
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">設定した値が負であるか、8の倍数ではない。</exception>
+        public int SaltSize
+        {
+            get { return saltSize; }
+            set
+            {
+                if (value <= 0 || value % 8 > 0)
+                {
+                    throw new ArgumentOutOfRangeException("value");
+                }
+                saltSize = value;
+            }
+        }
 
         /// <summary>
         /// ただ一つのインスタンスを取得します。
