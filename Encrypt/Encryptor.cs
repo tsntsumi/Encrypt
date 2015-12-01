@@ -301,17 +301,23 @@ namespace Encrypt
             }
             if (disposing)
             {
-                if (DeflateStream != null)
+                try
                 {
-                    DeflateStream.Dispose();
+                    if (DeflateStream != null)
+                    {
+                        DeflateStream.Dispose();
+                    }
+                    if (CryptoStream != null)
+                    {
+                        CryptoStream.Dispose();
+                    }
                 }
-                if (CryptoStream != null)
+                finally
                 {
-                    CryptoStream.Dispose();
-                }
-                if (OutputStream != null)
-                {
-                    OutputStream.Close();
+                    if (OutputStream != null)
+                    {
+                        OutputStream.Close();
+                    }
                 }
             }
 
