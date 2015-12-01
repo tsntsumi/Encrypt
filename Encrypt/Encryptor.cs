@@ -134,6 +134,23 @@ namespace Encrypt
             }
         }
 
+        /// <summary>
+        /// コンストラクタで設定されたストリームを使用して、指定されたバイト配列のデータを暗号化します。
+        /// </summary>
+        /// <param name="data">暗号化するデータ。</param>
+        public void Encrypt(byte[] data)
+        {
+            if (disposed)
+            {
+                return;
+            }
+            using (var memoryStream = new MemoryStream(data))
+            {
+                Encrypt(memoryStream);
+            }
+        }
+
+        /// <summary>
         /// 指定されたストリームを暗号化して、指定されたストリームに出力します。
         /// </summary>
         /// <param name="inputStream">入力ストリーム。</param>
