@@ -47,7 +47,7 @@ namespace DecryptFile
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine("{0}: {1}", ProgramName, ex.Message);
+                Console.WriteLine("{0}: {1}: {2}", ProgramName, ex.GetType(), ex.Message);
 				Console.WriteLine(ex.StackTrace);
 			}
 		}
