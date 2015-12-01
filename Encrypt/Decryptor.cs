@@ -220,17 +220,39 @@ namespace Encrypt
             }
             if (disposing)
             {
-                if (DeflateStream != null)
+                try
                 {
-                    DeflateStream.Dispose();
+                    if (DeflateStream != null)
+                    {
+                        DeflateStream.Dispose();
+                    }
+                    if (CryptoStream != null)
+                    {
+                        CryptoStream.Dispose();
+                    }
                 }
-                if (CryptoStream != null)
+                catch (CryptographicException)
                 {
-                    CryptoStream.Dispose();
+                    // CryptoStream/DeflateStream を作成して、何も読み込まずにそれらを Dispose すると
+                    // この例外が発生する。また、読み込んだバイト数が AESManeged のプロパティに設定した
+                    // ブロックサイズで割り切れない状況で Dispose してもこの例外が発生する。
+                    // しかし、CryptoStream/DeflateStream の Read メソッドがストリームの終端に到達した時に、
+                    // 同様の状況だった場合にも同じ例外が発生する。
+                    // したがって Decryptor インスタンスを using 文で生成した場合に、Decryptor.DecryptStream
+                    // プロパティのストリームの Read メソッドでこの例外が発生すると、Decryptor.Dispose メソッドでも
+                    // 同じ例外が発生してしまい、本当はどこで発生したのかを特定するのが困難になってしまう。
+                    // そこで Dispose で発生した例外の方は無視することにする。
                 }
-                if (InputStream != null)
+                catch (IndexOutOfRangeException)
                 {
-                    InputStream.Close();
+                    // CryptographicException と同様。ただし、MONO Framework では発生しない様子。
+                }
+                finally
+                {
+                    if (InputStream != null)
+                    {
+                        InputStream.Close();
+                    }
                 }
             }
 
