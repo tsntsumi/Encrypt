@@ -81,7 +81,7 @@ namespace Encrypt
                 aes.Padding = settings.Padding;
 
                 // 指定されたパスワードをベースに擬似乱数を生成
-                var derivedBytes = new Rfc2898DeriveBytes(password, (settings.SaltSize + 7) / 8);
+                var derivedBytes = new Rfc2898DeriveBytes(password, settings.SaltSize / 8);
                 var salt = derivedBytes.Salt;
 
                 aes.Key = derivedBytes.GetBytes(aes.KeySize / 8);   // aes.KeySize は必ず8の倍数

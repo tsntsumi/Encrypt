@@ -74,7 +74,7 @@ namespace Encrypt
                 aes.Padding = settings.Padding;
 
                 // ファイルの先頭からsaltを読み込む
-                var salt = new byte[(settings.SaltSize + 7) / 8];
+                var salt = new byte[settings.SaltSize / 8];
                 int readSaltLength = InputStream.Read(salt, 0, salt.Length);
                 if (readSaltLength < salt.Length)
                 {
