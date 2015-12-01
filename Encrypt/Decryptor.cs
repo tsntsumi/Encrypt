@@ -142,6 +142,26 @@ namespace Encrypt
             }
         }
 
+        /// <summary>
+        /// コンストラクタで設定されたストリームから、復号化して読み込んだバイトデータを返します。
+        /// </summary>
+        /// <returns>復号化したデータ。</returns>
+        public byte[] Decrypt()
+        {
+            if (disposed)
+            {
+                return null;
+            }
+            byte[] data;
+            using (var memoryStream = new MemoryStream())
+            {
+                Decrypt(memoryStream);
+                data = memoryStream.ToArray();
+            }
+            return data;
+        }
+
+        /// <summary>
         /// 指定されたストリームを復号化して、指定されたストリームに出力します。
         /// </summary>
         /// <param name="inputStream">入力ストリーム。</param>
