@@ -29,9 +29,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
+    <Compile Include="EncryptSettingsTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Encrypt\Encrypt.csproj">
+      <Project>{89ED7789-888C-437A-B79A-BA5F26DAEDD7}</Project>
+      <Name>Encrypt</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
