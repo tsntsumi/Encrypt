@@ -188,12 +188,11 @@ namespace Encrypt
         /// <param name="encoding">テキストのエンコーディング。</param>
         public static void AppendTextToFile(string fileName, string text, string password, Encoding encoding)
         {
-            byte[] buffer;
-            long decryptedSize;
-            int capacity;
-            int appendSize = text.Length + Environment.NewLine.Length;
+            byte[] buffer = null;
+            long decryptedSize = 0;
+            int appendSize = encoding.GetByteCount(text) + Environment.NewLine.Length;
+
             // 復号化したファイルの内容を読み込みます。
-            // ファイルが存在しなければ、バッファを割り当てます。
             if (File.Exists(fileName))
             {
                 var fileInfo = new FileInfo(fileName);
@@ -201,27 +200,23 @@ namespace Encrypt
                 // MemoryStreamに指定するcapacityは、復号後の予想サイズに、
                 // 後で文字列textを追加することを考慮した長さを加えています。
                 // 復号後の予想サイズは、暗号化されたファイルが圧縮されているため概算です。
-                capacity = (fileSize * 3) / 2 + appendSize;
+                int capacity = (fileSize * 3) / 2 + appendSize;
                 using (var outputStream = new MemoryStream(capacity))
                 using (var decryptor = new Decryptor(fileName, password))
                 {
                     decryptor.Decrypt(outputStream);
                     buffer = outputStream.GetBuffer();
                     decryptedSize = outputStream.Length;
-                    capacity = outputStream.Capacity;  // 復号中にバッファが拡張された場合のためにcapacityを更新します。
                 }
             }
-            else
-            {
-                decryptedSize = 0;
-                capacity = appendSize;
-                buffer = new byte[capacity];
-            }
             // 読み込んだ内容に指定された文字列を追加して、暗号化して保存します。
-            using (var inputStream = new MemoryStream(buffer, 0, capacity, true))
+            using (var inputStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(inputStream, encoding))
             {
-                inputStream.Seek(decryptedSize, SeekOrigin.Begin);
+                if (buffer != null)
+                {
+                    streamWriter.BaseStream.Write(buffer, 0, (int)decryptedSize);
+                }
                 streamWriter.WriteLine("{0}", text);
                 streamWriter.Flush();
                 inputStream.Seek(0, SeekOrigin.Begin);
